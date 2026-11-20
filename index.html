@@ -1,0 +1,2314 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Rádio Gospel Inspiração e Louvor • PWA Oficial (Ao Vivo & Auto DJ)</title>
+
+    <!-- Meta Tags Essenciais de PWA (Android, iOS, Windows, macOS) -->
+    <meta name="description" content="Rádio Gospel Inspiração e Louvor - Transmissão ao vivo, Auto DJ 24h com banco de dados de louvores, estúdio de locução e pedidos de oração.">
+    <meta name="theme-color" content="#0b1630">
+    <meta name="background-color" content="#060d1f">
+    <meta name="application-name" content="Rádio Gospel Inspiração e Louvor">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Inspiração e Louvor">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Links Dinâmicos de Manifest e Ícones PWA (Preenchidos via Script no Head para 100% compatibilidade) -->
+    <link id="pwa-manifest-link" rel="manifest">
+    <link id="pwa-apple-icon" rel="apple-touch-icon">
+    <link id="pwa-favicon" rel="icon" type="image/png">
+
+    <!-- Fontes & Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#13244a',
+                            900: '#0b1630',
+                            950: '#060d1f',
+                        },
+                        gold: {
+                            300: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Bootstrap Dinâmico do Manifest PWA e Ícones PNG/SVG antes do carregamento do Body -->
+    <script>
+        (function setupPWAHead() {
+            try {
+                // Gerar ícone oficial 512x512 em Canvas PNG (para Apple Touch Icon, MediaSession e Manifest)
+                function generateRadioIconDataURL(size) {
+                    const c = document.createElement('canvas');
+                    c.width = size;
+                    c.height = size;
+                    const ctx = c.getContext('2d');
+
+                    // Fundo gradiente Azul Marinho Profundo
+                    const bgGrad = ctx.createLinearGradient(0, 0, size, size);
+                    bgGrad.addColorStop(0, '#13244a');
+                    bgGrad.addColorStop(0.5, '#0b1630');
+                    bgGrad.addColorStop(1, '#060d1f');
+                    ctx.fillStyle = bgGrad;
+                    ctx.fillRect(0, 0, size, size);
+
+                    // Borda interna dourada sutil
+                    const pad = size * 0.06;
+                    ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)';
+                    ctx.lineWidth = size * 0.015;
+                    ctx.beginPath();
+                    ctx.roundRect(pad, pad, size - pad * 2, size - pad * 2, size * 0.18);
+                    ctx.stroke();
+
+                    // Aura radial dourada no centro
+                    const aura = ctx.createRadialGradient(size / 2, size / 2, size * 0.05, size / 2, size / 2, size * 0.42);
+                    aura.addColorStop(0, 'rgba(251, 191, 36, 0.28)');
+                    aura.addColorStop(1, 'rgba(251, 191, 36, 0)');
+                    ctx.fillStyle = aura;
+                    ctx.fillRect(0, 0, size, size);
+
+                    // Ondas sonoras circulares estilizadas
+                    ctx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
+                    ctx.lineWidth = size * 0.022;
+                    ctx.lineCap = 'round';
+                    [0.27, 0.35].forEach(rFactor => {
+                        ctx.beginPath();
+                        ctx.arc(size / 2, size * 0.42, size * rFactor, -Math.PI * 0.78, -Math.PI * 0.22);
+                        ctx.stroke();
+                    });
+
+                    // Cruz Dourada Celestial no Centro
+                    const goldGrad = ctx.createLinearGradient(0, size * 0.18, 0, size * 0.68);
+                    goldGrad.addColorStop(0, '#fde68a');
+                    goldGrad.addColorStop(0.5, '#fbbf24');
+                    goldGrad.addColorStop(1, '#d97706');
+                    ctx.fillStyle = goldGrad;
+
+                    const crossW = size * 0.07;
+                    const crossH = size * 0.38;
+                    const armW = size * 0.25;
+                    const armH = size * 0.07;
+                    const cx = size / 2;
+                    const cy = size * 0.42;
+
+                    // Haste vertical
+                    ctx.beginPath();
+                    ctx.roundRect(cx - crossW / 2, cy - crossH * 0.42, crossW, crossH, crossW / 2);
+                    ctx.fill();
+
+                    // Haste horizontal
+                    ctx.beginPath();
+                    ctx.roundRect(cx - armW / 2, cy - armH * 1.15, armW, armH, armH / 2);
+                    ctx.fill();
+
+                    // Texto "RÁDIO GOSPEL" e "INSPIRAÇÃO E LOUVOR" na base
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.font = `700 ${Math.round(size * 0.056)}px Inter, sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText('RÁDIO GOSPEL', size / 2, size * 0.77);
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = `800 ${Math.round(size * 0.062)}px Inter, sans-serif`;
+                    ctx.fillText('INSPIRAÇÃO E LOUVOR', size / 2, size * 0.86);
+
+                    return c.toDataURL('image/png');
+                }
+
+                const icon192 = generateRadioIconDataURL(192);
+                const icon512 = generateRadioIconDataURL(512);
+                window.__RADIO_ICON_512__ = icon512;
+
+                document.getElementById('pwa-apple-icon').href = icon192;
+                document.getElementById('pwa-favicon').href = icon192;
+
+                // Construir Web App Manifest dinâmico
+                const manifestObj = {
+                    name: "Rádio Gospel Inspiração e Louvor - Ao Vivo & Auto DJ",
+                    short_name: "Inspiração & Louvor",
+                    description: "A Voz da Fé e Adoração • Rádio Gospel Inspiração e Louvor com Transmissão Ao Vivo, Auto DJ 24h e Banco de Músicas.",
+                    start_url: window.location.href.split('#')[0],
+                    scope: "./",
+                    display: "standalone",
+                    orientation: "any",
+                    background_color: "#060d1f",
+                    theme_color: "#0b1630",
+                    categories: ["music", "entertainment", "news"],
+                    icons: [
+                        {
+                            src: icon192,
+                            sizes: "192x192",
+                            type: "image/png",
+                            purpose: "any maskable"
+                        },
+                        {
+                            src: icon512,
+                            sizes: "512x512",
+                            type: "image/png",
+                            purpose: "any maskable"
+                        }
+                    ]
+                };
+
+                const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+                const manifestURL = URL.createObjectURL(manifestBlob);
+                document.getElementById('pwa-manifest-link').href = manifestURL;
+            } catch (e) {
+                console.warn('Aviso ao gerar manifest dinâmico:', e);
+            }
+        })();
+    </script>
+
+    <style>
+        body {
+            background-color: #060d1f;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(251, 191, 36, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(29, 78, 216, 0.12) 0%, transparent 45%);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .glass-panel {
+            background: rgba(11, 22, 48, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        @keyframes pulse-live {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.03); }
+        }
+        .pulse-live {
+            animation: pulse-live 2s infinite ease-in-out;
+        }
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060d1f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a8a;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+<body class="text-gray-100 antialiased min-h-screen flex flex-col pb-20 lg:pb-0">
+
+    <!-- BANNER DE INSTALAÇÃO PWA (DISCRETO E INTELIGENTE) -->
+    <div id="pwaInstallBanner" class="hidden bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 border-b border-gold-500/30 px-4 py-2.5 text-xs sm:text-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-950 flex items-center justify-center font-bold flex-shrink-0 shadow-md">
+                    <i class="fa-solid fa-cross"></i>
+                </div>
+                <div class="truncate">
+                    <p class="font-bold text-white truncate">Instale o App Rádio Gospel Inspiração e Louvor</p>
+                    <p class="text-gray-300 text-xs truncate">Ouça em segundo plano, com tela bloqueada e músicas salvas offline</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <button onclick="triggerPWAInstall()" class="bg-gold-400 hover:bg-gold-300 text-navy-950 font-bold px-3.5 py-1.5 rounded-lg text-xs transition-colors shadow">
+                    Instalar Agora
+                </button>
+                <button onclick="dismissInstallBanner()" class="text-gray-400 hover:text-white p-1.5" title="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CABEÇALHO SUPERIOR -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+            <!-- Identidade Visual da Rádio -->
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-950 flex items-center justify-center text-lg sm:text-xl font-extrabold shadow-lg shadow-gold-500/20 relative flex-shrink-0">
+                    <i class="fa-solid fa-cross"></i>
+                    <span id="pwaOnlineDot" title="Status de Conexão" class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-navy-950"></span>
+                </div>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-sm sm:text-lg lg:text-xl font-extrabold text-white tracking-tight leading-none truncate">
+                            INSPIRAÇÃO <span class="text-gold-400">&amp; LOUVOR</span>
+                        </h1>
+                        <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-gold-500/20 text-gold-300 border border-gold-500/30 flex-shrink-0">PWA</span>
+                    </div>
+                    <p class="text-[10px] sm:text-[11px] text-gold-400 font-medium tracking-widest uppercase mt-0.5 truncate">Rádio Gospel • A Voz da Adoração</p>
+                </div>
+            </div>
+
+            <!-- Navegação Desktop -->
+            <nav class="hidden lg:flex items-center gap-5 text-sm font-medium">
+                <a href="#ao-vivo" class="text-gold-400 hover:text-gold-300 transition-colors flex items-center gap-2">
+                    <span id="navLiveDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> Player
+                </a>
+                <a href="#auto-dj" class="text-gray-300 hover:text-white transition-colors">Auto DJ &amp; Banco</a>
+                <a href="#estudio" class="text-gray-300 hover:text-white transition-colors">Estúdio &amp; Mixer</a>
+                <a href="#programacao" class="text-gray-300 hover:text-white transition-colors">Programação</a>
+                <a href="#pedidos" class="text-gray-300 hover:text-white transition-colors">Mural</a>
+            </nav>
+
+            <!-- Ações Direitas: Status PWA, Instalar App e Play Rápido -->
+            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                <div id="headerModeBadge" class="hidden xl:flex items-center gap-2 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs px-3 py-1.5 rounded-full font-semibold transition-all">
+                    <span id="headerModeIcon">🤖</span>
+                    <span id="headerModeText">AUTO DJ - PROGRAMAÇÃO MUSICAL</span>
+                </div>
+
+                <!-- Botão Instalar App (PWA) -->
+                <button id="headerInstallBtn" onclick="triggerPWAInstall()" class="bg-white/10 hover:bg-white/15 text-gold-300 border border-gold-500/30 font-semibold px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 text-xs sm:text-sm" title="Instalar Aplicativo PWA">
+                    <i class="fa-solid fa-download"></i>
+                    <span id="headerInstallText" class="hidden sm:inline">Instalar App</span>
+                </button>
+
+                <!-- Botão Ouvir Rádio -->
+                <button id="quickPlayBtn" onclick="toggleMasterAudio()" class="bg-gradient-to-r from-gold-500 to-gold-400 text-navy-950 font-bold px-3.5 sm:px-4 py-2 rounded-xl hover:brightness-110 transition-all flex items-center gap-2 text-xs sm:text-sm shadow-md">
+                    <i id="quickPlayIcon" class="fa-solid fa-play"></i>
+                    <span id="quickPlayText">Ouvir</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10">
+
+        <!-- BANNER PRINCIPAL: TRANSMISSÃO AO VIVO & AUTO DJ -->
+        <section id="ao-vivo" class="relative rounded-3xl overflow-hidden glass-panel border border-gold-500/20 p-5 sm:p-8 md:p-10">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                
+                <!-- Informações da Transmissão / Música Atual -->
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <div id="heroModeBadge" class="inline-flex items-center gap-2 bg-amber-500/15 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide transition-all">
+                            <span id="heroModeEmoji">🤖</span>
+                            <span id="heroModeLabel">AUTO DJ - PROGRAMAÇÃO MUSICAL</span>
+                        </div>
+                        <span id="duckingIndicator" class="hidden items-center gap-1.5 bg-blue-500/20 text-blue-300 border border-blue-500/30 px-3 py-1.5 rounded-full text-xs font-semibold">
+                            <i class="fa-solid fa-sliders"></i> Fundo Musical (20%)
+                        </span>
+                        <span id="pwaStatusPill" class="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1.5 rounded-full text-xs font-semibold">
+                            <i class="fa-solid fa-database"></i> <span id="pwaStatusLabel">Banco Local Ativo</span>
+                        </span>
+                    </div>
+
+                    <h2 id="currentShowTitle" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        Rádio Gospel Inspiração e Louvor
+                    </h2>
+
+                    <p id="currentShowHost" class="text-gray-300 text-sm sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-robot text-gold-400"></i> <span>Auto DJ Inspiração e Louvor • Seleção Contínua 24h</span>
+                    </p>
+
+                    <!-- Card Tocando Agora -->
+                    <div class="bg-navy-900/80 rounded-2xl p-4 border border-white/10 flex items-center justify-between gap-4 max-w-xl">
+                        <div class="flex items-center gap-3.5 overflow-hidden">
+                            <div id="nowPlayingCover" class="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500/25 to-navy-800 border border-gold-500/30 flex items-center justify-center text-gold-400 font-bold text-xl overflow-hidden shadow-md flex-shrink-0">
+                                <i class="fa-solid fa-music"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <span id="nowPlayingSourceLabel" class="text-[11px] uppercase text-gold-400 tracking-wider font-bold">Auto DJ • Faixa Atual</span>
+                                <h4 id="songTitle" class="text-white font-bold truncate text-sm sm:text-base">Adoração Celestial (Piano &amp; Pad)</h4>
+                                <p id="songArtist" class="text-gray-400 text-xs truncate">Rádio Gospel Inspiração e Louvor • Louvor Instrumental</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <button onclick="prevTrack()" title="Faixa Anterior" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-gold-500 hover:text-navy-950 text-gray-300 transition-colors flex items-center justify-center">
+                                <i class="fa-solid fa-backward-step text-xs"></i>
+                            </button>
+                            <button onclick="nextTrack()" title="Próxima Faixa" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-gold-500 hover:text-navy-950 text-gray-300 transition-colors flex items-center justify-center">
+                                <i class="fa-solid fa-forward-step text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Botões Principais -->
+                    <div class="flex flex-wrap gap-3 pt-1">
+                        <button onclick="toggleMasterAudio()" class="bg-gradient-to-r from-gold-400 to-gold-600 text-navy-950 font-bold px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl hover:scale-[1.02] transition-transform flex items-center gap-3 text-sm sm:text-lg shadow-xl shadow-gold-500/20">
+                            <i id="heroPlayIcon" class="fa-solid fa-play text-lg sm:text-xl"></i>
+                            <span id="heroPlayText">LIGAR RÁDIO (AUTO DJ)</span>
+                        </button>
+                        
+                        <button onclick="toggleLiveBroadcastMode()" id="heroLiveSwitchBtn" class="bg-red-500/15 hover:bg-red-500/25 text-red-300 border border-red-500/40 font-semibold px-5 py-3.5 sm:py-4 rounded-2xl transition-all flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-tower-broadcast"></i>
+                            <span id="heroLiveSwitchText">Entrar Ao Vivo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Visualizador de Ondas Sonoras (Canvas 60fps) -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                    <div class="w-full bg-navy-900/90 rounded-2xl p-5 sm:p-6 border border-white/10 shadow-2xl relative">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-simple text-gold-400"></i> Espectro de Áudio
+                            </span>
+                            <span id="audioStatusText" class="text-xs font-medium px-2.5 py-0.5 rounded bg-gray-800 text-gray-400">Em Espera</span>
+                        </div>
+
+                        <div class="relative w-full h-44 sm:h-48 bg-navy-950 rounded-xl overflow-hidden border border-white/5 flex items-center justify-center">
+                            <canvas id="visualizerCanvas" class="w-full h-full"></canvas>
+                            
+                            <div id="visualizerPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center bg-navy-950/80 backdrop-blur-sm text-gray-400 text-center px-4">
+                                <i class="fa-solid fa-signal text-3xl mb-2 text-gold-400/50"></i>
+                                <p class="text-xs">Toque em 'Ligar Rádio' para iniciar o Auto DJ ou entre Ao Vivo</p>
+                            </div>
+                        </div>
+
+                        <!-- Barra de Progresso Interativa -->
+                        <div class="mt-4 space-y-1.5">
+                            <div class="flex justify-between text-[11px] font-mono text-gray-400">
+                                <span id="trackCurrentTime">00:00</span>
+                                <span id="trackModeHint" class="text-gold-400">Auto DJ Automático</span>
+                                <span id="trackTotalTime">00:45</span>
+                            </div>
+                            <div class="w-full h-2 bg-navy-950 rounded-full overflow-hidden border border-white/5 cursor-pointer" onclick="seekTrack(event)">
+                                <div id="trackProgressBar" class="h-full bg-gradient-to-r from-gold-500 to-gold-300 w-0 transition-all duration-150"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BARRA DE CONTROLE MASTER & STREAMING EXTERNO -->
+        <section class="glass-panel p-5 sm:p-6 rounded-2xl border border-white/10 shadow-xl">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-5">
+                
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4 w-full lg:w-auto justify-between lg:justify-start">
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="prevTrack()" class="w-11 h-11 rounded-xl bg-navy-900 hover:bg-white/10 text-gray-300 flex items-center justify-center border border-white/10 transition-colors" title="Anterior">
+                            <i class="fa-solid fa-backward-step"></i>
+                        </button>
+                        <button id="masterPlayBtn" onclick="toggleMasterAudio()" class="w-14 h-14 rounded-2xl bg-gold-400 text-navy-950 flex items-center justify-center text-xl hover:scale-105 transition-transform shadow-lg shadow-gold-500/20" title="Play / Pause">
+                            <i id="masterPlayIcon" class="fa-solid fa-play"></i>
+                        </button>
+                        <button onclick="nextTrack()" class="w-11 h-11 rounded-xl bg-navy-900 hover:bg-white/10 text-gray-300 flex items-center justify-center border border-white/10 transition-colors" title="Próxima">
+                            <i class="fa-solid fa-forward-step"></i>
+                        </button>
+                    </div>
+
+                    <!-- Alternador Rápido de Modo -->
+                    <div class="flex items-center bg-navy-950 p-1.5 rounded-xl border border-white/10">
+                        <button id="btnModeAutoDj" onclick="switchToAutoDjMode()" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-gold-500 text-navy-950 transition-all flex items-center gap-1.5">
+                            <span>🤖</span> Auto DJ
+                        </button>
+                        <button id="btnModeLive" onclick="switchToLiveMode()" class="px-3.5 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition-all flex items-center gap-1.5">
+                            <span>🔴</span> Ao Vivo
+                        </button>
+                    </div>
+
+                    <!-- Volume Master -->
+                    <div class="flex items-center gap-3 bg-navy-900/60 px-4 py-2.5 rounded-xl border border-white/5">
+                        <button onclick="toggleMute()" class="text-gray-400 hover:text-white transition-colors">
+                            <i id="volumeIcon" class="fa-solid fa-volume-high text-gold-400"></i>
+                        </button>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.85" oninput="changeVolume(this.value)" class="w-24 accent-gold-400 cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Conexão Stream Ao Vivo (Icecast/Shoutcast/MP3/AAC) -->
+                <div class="w-full lg:w-5/12 flex items-center gap-2 bg-navy-950 p-2 rounded-xl border border-white/10">
+                    <span class="text-xs text-gray-400 px-2 whitespace-nowrap"><i class="fa-solid fa-satellite-dish text-gold-400"></i> Stream:</span>
+                    <input type="text" id="streamUrlInput" value="" placeholder="URL Icecast/Shoutcast/MP3 ao vivo (opcional)" class="w-full bg-transparent text-xs text-gray-200 focus:outline-none focus:text-white font-mono">
+                    <button onclick="connectExternalStream()" class="bg-white/10 hover:bg-gold-500 hover:text-navy-950 text-xs px-3.5 py-2 rounded-lg text-white font-semibold transition-colors whitespace-nowrap">
+                        Conectar
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO: AUTO DJ, BANCO DE DADOS INDEXEDDB & BUSCA COM LUPA -->
+        <section id="auto-dj" class="glass-panel rounded-3xl p-5 sm:p-8 border border-gold-500/20 space-y-6">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2 text-gold-400 text-xs font-bold uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-compact-disc fa-spin" style="animation-duration: 6s;"></i>
+                        <span>Acervo Musical 24h • Banco de Dados Persistente (IndexedDB)</span>
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white">Auto DJ &amp; Biblioteca de Louvores</h3>
+                    <p class="text-gray-400 text-sm">Suas músicas enviadas ficam salvas permanentemente no banco de dados do aplicativo, mesmo após fechar ou reiniciar.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <label class="cursor-pointer bg-gradient-to-r from-gold-500 to-gold-400 text-navy-950 font-bold px-4 py-2.5 rounded-xl hover:brightness-110 transition-all flex items-center gap-2 text-xs sm:text-sm shadow-lg shadow-gold-500/15">
+                        <i class="fa-solid fa-folder-plus"></i>
+                        <span>Adicionar &amp; Salvar Músicas</span>
+                        <input type="file" id="audioUploadInput" accept="audio/*" multiple class="hidden" onchange="handleFilesUpload(event)">
+                    </label>
+
+                    <button id="shuffleBtn" onclick="toggleShuffle()" class="bg-navy-900 hover:bg-white/10 text-gray-300 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-shuffle"></i>
+                        <span>Aleatório: OFF</span>
+                    </button>
+
+                    <button id="repeatBtn" onclick="toggleRepeat()" class="bg-gold-500/20 text-gold-300 border border-gold-500/40 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-repeat"></i>
+                        <span>Repetir: TODOS</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BARRA DE BUSCA COM LUPA & STATUS DO BANCO DE DADOS -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
+                <!-- Campo de Pesquisa com Lupa -->
+                <div class="lg:col-span-7 relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gold-400 text-sm"></i>
+                    </div>
+                    <input
+                        type="text"
+                        id="playlistSearchInput"
+                        oninput="filterPlaylist(this.value)"
+                        placeholder="Buscar louvor por título, cantor ou estilo na biblioteca..."
+                        class="w-full bg-navy-950/90 text-sm text-white placeholder-gray-400 pl-11 pr-10 py-3 rounded-2xl border border-white/10 focus:outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all"
+                    >
+                    <button
+                        id="clearSearchBtn"
+                        onclick="clearSearchQuery()"
+                        title="Limpar busca"
+                        class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-white transition-colors"
+                    >
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Indicador de Armazenamento IndexedDB & Limpar Banco -->
+                <div class="lg:col-span-5 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 bg-navy-950/75 px-4 py-2.5 rounded-2xl border border-white/10">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-database text-xs"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p id="dbStorageLabel" class="text-xs font-bold text-white truncate">Banco IndexedDB: 0 salvas</p>
+                            <p id="dbSizeLabel" class="text-[11px] text-gray-400 truncate">0.00 MB armazenados localmente</p>
+                        </div>
+                    </div>
+
+                    <button
+                        id="clearDbBtn"
+                        onclick="confirmClearDatabase()"
+                        title="Remover todas as músicas salvas pelo usuário do banco de dados"
+                        class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    >
+                        <i class="fa-solid fa-broom"></i>
+                        <span>Limpar Salvas</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirmação Inline de Limpeza do Banco (Sem alert/confirm) -->
+            <div id="clearDbConfirmBox" class="hidden bg-red-950/70 border border-red-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3 text-xs sm:text-sm text-red-200">
+                    <i class="fa-solid fa-triangle-exclamation text-red-400 text-lg"></i>
+                    <span>Deseja apagar permanentemente todas as músicas enviadas por você do banco de dados local?</span>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-auto">
+                    <button onclick="cancelClearDatabase()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-200 text-xs font-semibold">
+                        Cancelar
+                    </button>
+                    <button onclick="executeClearDatabase()" class="px-3.5 py-1.5 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs font-bold">
+                        Sim, Apagar Tudo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Músicas da Playlist -->
+            <div class="space-y-2.5 max-h-96 overflow-y-auto pr-1" id="playlistContainer"></div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 text-xs text-gray-400">
+                <span id="playlistSummary">5 faixas carregadas na fila do Auto DJ</span>
+                <span><i class="fa-solid fa-shield-halved text-gold-400"></i> Persistência automática em IndexedDB + Fade-in / Fade-out</span>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: ESTÚDIO DO LOCUTOR, AUTO-DUCKING & WAKE LOCK -->
+        <section id="estudio" class="glass-panel rounded-3xl p-5 sm:p-8 border border-white/10 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 pb-6 border-b border-white/10 gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-gold-400 text-xs font-bold uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-microphone-lines"></i> Mesa de Corte &amp; Locução Ao Vivo
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white">Estúdio do Locutor &amp; Auto-Ducking</h3>
+                    <p class="text-gray-400 text-sm">Ative o microfone para transmitir sua voz ao vivo com fundo musical automático (Ducking 20%) e tela sempre ativa.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <!-- Wake Lock Toggle (Manter Tela Acesa no Estúdio) -->
+                    <button id="wakeLockBtn" onclick="toggleWakeLock()" class="bg-navy-950 hover:bg-white/10 text-gray-300 border border-white/10 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors" title="Impede que o celular bloqueie a tela durante a transmissão">
+                        <i id="wakeLockIcon" class="fa-solid fa-mobile-screen text-gold-400"></i>
+                        <span id="wakeLockText">Tela Acesa: OFF</span>
+                    </button>
+
+                    <!-- Checkbox Ducking -->
+                    <div class="flex items-center gap-2 bg-navy-950 px-3 py-2 rounded-xl border border-white/10">
+                        <input type="checkbox" id="duckingModeCheckbox" checked class="w-4 h-4 accent-gold-400 rounded cursor-pointer">
+                        <label for="duckingModeCheckbox" class="text-xs text-gray-200 font-medium cursor-pointer select-none">
+                            Fundo musical (Ducking 20%)
+                        </label>
+                    </div>
+
+                    <span id="micStatusBadge" class="bg-gray-800 text-gray-400 text-xs px-3 py-2 rounded-full font-semibold border border-white/5 flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-[8px]"></i> Mic Desligado
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <!-- Controle de Microfone -->
+                <div class="md:col-span-5 space-y-5">
+                    <div class="bg-navy-950/80 p-6 rounded-2xl border border-white/10 text-center space-y-4">
+                        <div id="micButtonWrapper" class="w-24 h-24 rounded-full bg-navy-900 border-2 border-gold-500/30 flex items-center justify-center mx-auto transition-all">
+                            <button id="toggleMicBtn" onclick="toggleMicrophone()" class="w-20 h-20 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 text-navy-950 text-3xl font-bold flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-gold-500/20">
+                                <i id="micIcon" class="fa-solid fa-microphone"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <h4 id="micActionText" class="font-bold text-white text-lg">Entrar Ao Vivo no Microfone</h4>
+                            <p id="micSubText" class="text-xs text-gray-400">Baixa o Auto DJ suavemente para 20% enquanto você fala</p>
+                        </div>
+                    </div>
+
+                    <!-- VU Meter Digital -->
+                    <div class="bg-navy-900/60 p-4 rounded-xl border border-white/5 space-y-2">
+                        <div class="flex justify-between text-xs font-semibold text-gray-400">
+                            <span>Nível do Microfone (VU Meter)</span>
+                            <span id="vuLevelText">0%</span>
+                        </div>
+                        <div class="w-full bg-navy-950 h-4 rounded-full overflow-hidden p-0.5 border border-white/10">
+                            <div id="vuMeterBar" class="h-full bg-gradient-to-r from-green-500 via-yellow-400 to-red-500 w-0 transition-all duration-75 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cartucheira de Vinhetas & Status PWA -->
+                <div class="md:col-span-7 space-y-5">
+                    <h4 class="text-white font-bold text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-gold-400"></i> Cartucheira de Vinhetas &amp; Efeitos Gospel
+                    </h4>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button onclick="playSFX('vinheta')" class="bg-navy-900/80 hover:bg-gold-500 hover:text-navy-950 text-gray-200 text-xs font-semibold p-4 rounded-xl border border-white/10 flex flex-col items-center gap-2 transition-colors group">
+                            <i class="fa-solid fa-bullhorn text-lg text-gold-400 group-hover:text-navy-950"></i>
+                            <span>Vinheta Inspiração &amp; Louvor</span>
+                        </button>
+                        <button onclick="playSFX('harpa')" class="bg-navy-900/80 hover:bg-gold-500 hover:text-navy-950 text-gray-200 text-xs font-semibold p-4 rounded-xl border border-white/10 flex flex-col items-center gap-2 transition-colors group">
+                            <i class="fa-solid fa-bell text-lg text-gold-400 group-hover:text-navy-950"></i>
+                            <span>Harpa Celestial</span>
+                        </button>
+                        <button onclick="playSFX('aplausos')" class="bg-navy-900/80 hover:bg-gold-500 hover:text-navy-950 text-gray-200 text-xs font-semibold p-4 rounded-xl border border-white/10 flex flex-col items-center gap-2 transition-colors group">
+                            <i class="fa-solid fa-hands-clapping text-lg text-gold-400 group-hover:text-navy-950"></i>
+                            <span>Aplausos Igreja</span>
+                        </button>
+                        <button onclick="playSFX('fundo')" class="bg-navy-900/80 hover:bg-gold-500 hover:text-navy-950 text-gray-200 text-xs font-semibold p-4 rounded-xl border border-white/10 flex flex-col items-center gap-2 transition-colors group">
+                            <i class="fa-solid fa-hands-praying text-lg text-gold-400 group-hover:text-navy-950"></i>
+                            <span>Acorde de Oração</span>
+                        </button>
+                    </div>
+
+                    <!-- Painel Diagnóstico PWA & Banco de Dados -->
+                    <div class="bg-navy-950/70 border border-white/10 p-4 rounded-2xl space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gold-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-mobile-button"></i> Recursos Nativos PWA &amp; Banco Ativos
+                            </span>
+                            <span id="swStatusBadge" class="text-[11px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium">
+                                Offline-Ready
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-gray-300">
+                            <div class="bg-navy-900/70 p-2.5 rounded-xl border border-white/5 flex items-center gap-2">
+                                <i class="fa-solid fa-lock-open text-gold-400"></i>
+                                <span>Controles na Tela Bloqueada</span>
+                            </div>
+                            <div class="bg-navy-900/70 p-2.5 rounded-xl border border-white/5 flex items-center gap-2">
+                                <i class="fa-solid fa-wifi text-emerald-400"></i>
+                                <span id="networkStateText">Rede: Online</span>
+                            </div>
+                            <div class="bg-navy-900/70 p-2.5 rounded-xl border border-white/5 flex items-center gap-2">
+                                <i class="fa-solid fa-database text-blue-400"></i>
+                                <span>Banco IndexedDB Persistente</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- GRID: PROGRAMAÇÃO DIÁRIA & MURAL DE PEDIDOS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Programação Diária -->
+            <section id="programacao" class="lg:col-span-6 glass-panel rounded-3xl p-5 sm:p-8 border border-white/10 space-y-5">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gold-400">Grade Oficial</span>
+                    <h3 class="text-2xl font-bold text-white">Programação Diária</h3>
+                </div>
+                <div id="scheduleList" class="space-y-3"></div>
+            </section>
+
+            <!-- Mural de Pedidos e Oração -->
+            <section id="pedidos" class="lg:col-span-6 glass-panel rounded-3xl p-5 sm:p-8 border border-white/10 flex flex-col justify-between space-y-5">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gold-400">Interatividade</span>
+                            <h3 class="text-2xl font-bold text-white">Mural de Pedidos &amp; Oração</h3>
+                        </div>
+                        <span class="text-xs bg-gold-500/15 text-gold-300 px-3 py-1 rounded-full border border-gold-500/30 font-semibold">
+                            Ao Vivo
+                        </span>
+                    </div>
+
+                    <div id="chatMessages" class="space-y-3 max-h-80 overflow-y-auto pr-2"></div>
+                </div>
+
+                <form id="chatForm" onsubmit="sendMessage(event)" class="space-y-3 pt-4 border-t border-white/10">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="userName" placeholder="Seu Nome" required class="bg-navy-950 text-xs text-white p-3 rounded-xl border border-white/10 focus:outline-none focus:border-gold-400">
+                        <input type="text" id="userCity" placeholder="Sua Cidade/UF" required class="bg-navy-950 text-xs text-white p-3 rounded-xl border border-white/10 focus:outline-none focus:border-gold-400">
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="userMessage" placeholder="Escreva seu pedido de louvor ou oração..." required class="flex-grow bg-navy-950 text-xs text-white p-3 rounded-xl border border-white/10 focus:outline-none focus:border-gold-400">
+                        <button type="submit" class="bg-gold-500 hover:bg-gold-400 text-navy-950 px-4 py-3 rounded-xl font-bold text-xs transition-colors flex items-center justify-center">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="border-t border-white/10 bg-navy-950/90 py-8 px-4 text-center text-xs text-gray-400 space-y-2">
+        <p class="font-bold text-white text-sm">RÁDIO GOSPEL INSPIRAÇÃO E LOUVOR • PWA OFICIAL</p>
+        <p>Transmitindo fé, inspiração e adoração 24 horas por dia em todo o Brasil e no mundo.</p>
+    </footer>
+
+    <!-- BARRA DE NAVEGAÇÃO INFERIOR MOBILE (ESTILO APP NATIVO) -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 glass-panel border-t border-white/10 px-2 py-2 flex items-center justify-around" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom));">
+        <a href="#ao-vivo" class="flex flex-col items-center gap-1 text-gold-400 text-[11px] font-semibold px-3 py-1">
+            <i class="fa-solid fa-radio text-base"></i>
+            <span>Player</span>
+        </a>
+        <a href="#auto-dj" class="flex flex-col items-center gap-1 text-gray-300 hover:text-gold-400 text-[11px] font-medium px-3 py-1">
+            <i class="fa-solid fa-music text-base"></i>
+            <span>Banco DJ</span>
+        </a>
+        <a href="#estudio" class="flex flex-col items-center gap-1 text-gray-300 hover:text-gold-400 text-[11px] font-medium px-3 py-1">
+            <i class="fa-solid fa-microphone-lines text-base"></i>
+            <span>Estúdio</span>
+        </a>
+        <a href="#pedidos" class="flex flex-col items-center gap-1 text-gray-300 hover:text-gold-400 text-[11px] font-medium px-3 py-1">
+            <i class="fa-solid fa-comments text-base"></i>
+            <span>Mural</span>
+        </a>
+    </nav>
+
+    <!-- MODAL DE INSTRUÇÃO DE INSTALAÇÃO (iOS SAFARI / NAVEGADORES SEM PROMPT AUTOMÁTICO) -->
+    <div id="iosInstallModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-navy-900 border border-gold-500/40 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gold-500 text-navy-950 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-cross"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-base">Instalar Rádio Gospel Inspiração e Louvor</h4>
+                        <p class="text-xs text-gold-400">Adicionar à Tela de Início</p>
+                    </div>
+                </div>
+                <button onclick="closeIOSModal()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                Para instalar o aplicativo da <strong>Rádio Gospel Inspiração e Louvor</strong> no seu dispositivo e ouvir com aparência de app nativo:
+            </p>
+
+            <div class="space-y-3 text-xs text-gray-200 bg-navy-950/80 p-4 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-gold-500/20 text-gold-300 font-bold flex items-center justify-center flex-shrink-0">1</span>
+                    <span>Toque no ícone <strong>Compartilhar</strong> <i class="fa-solid fa-arrow-up-from-bracket text-blue-400 mx-1"></i> (no Safari) ou no menu <strong>⋮</strong> do navegador.</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-gold-500/20 text-gold-300 font-bold flex items-center justify-center flex-shrink-0">2</span>
+                    <span>Selecione <strong>"Adicionar à Tela de Início"</strong> ou <strong>"Instalar Aplicativo"</strong>.</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-gold-500/20 text-gold-300 font-bold flex items-center justify-center flex-shrink-0">3</span>
+                    <span>Toque em <strong>Adicionar</strong> e pronto! O ícone dourado aparecerá no seu dispositivo.</span>
+                </div>
+            </div>
+
+            <button onclick="closeIOSModal()" class="w-full bg-gold-400 hover:bg-gold-300 text-navy-950 font-bold py-3 rounded-xl text-sm transition-colors">
+                Entendi
+            </button>
+        </div>
+    </div>
+
+    <!-- ELEMENTO AUDIO PRINCIPAL -->
+    <audio id="radioAudio" crossorigin="anonymous" preload="auto"></audio>
+
+    <script>
+        // =========================================================================
+        // 1. BANCO DE DADOS INDEXEDDB PARA ARMAZENAR MÚSICAS PERMANENTEMENTE
+        // =========================================================================
+        const DB_NAME = 'RadioGospelInspiracaoLouvorDB';
+        const DB_VERSION = 1;
+        const STORE_SONGS = 'saved_songs';
+        let dbInstance = null;
+
+        function openSongsDatabase() {
+            return new Promise((resolve, reject) => {
+                if (!('indexedDB' in window)) {
+                    reject(new Error('IndexedDB não suportado neste navegador.'));
+                    return;
+                }
+                if (dbInstance) {
+                    resolve(dbInstance);
+                    return;
+                }
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_SONGS)) {
+                        const store = db.createObjectStore(STORE_SONGS, { keyPath: 'id' });
+                        store.createIndex('title', 'title', { unique: false });
+                        store.createIndex('createdAt', 'createdAt', { unique: false });
+                    }
+                };
+
+                request.onsuccess = (event) => {
+                    dbInstance = event.target.result;
+                    resolve(dbInstance);
+                };
+
+                request.onerror = (event) => {
+                    reject(event.target.error);
+                };
+            });
+        }
+
+        async function saveSongToIndexedDB(songRecord) {
+            try {
+                const db = await openSongsDatabase();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction([STORE_SONGS], 'readwrite');
+                    const store = tx.objectStore(STORE_SONGS);
+                    const req = store.put(songRecord);
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.error('Erro ao salvar música no IndexedDB:', err);
+                return false;
+            }
+        }
+
+        async function loadAllSongsFromIndexedDB() {
+            try {
+                const db = await openSongsDatabase();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction([STORE_SONGS], 'readonly');
+                    const store = tx.objectStore(STORE_SONGS);
+                    const req = store.getAll();
+                    req.onsuccess = () => resolve(req.result || []);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.error('Erro ao carregar músicas do IndexedDB:', err);
+                return [];
+            }
+        }
+
+        async function deleteSongFromIndexedDB(songId) {
+            try {
+                const db = await openSongsDatabase();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction([STORE_SONGS], 'readwrite');
+                    const store = tx.objectStore(STORE_SONGS);
+                    const req = store.delete(songId);
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.error('Erro ao deletar música do IndexedDB:', err);
+                return false;
+            }
+        }
+
+        async function clearAllSavedSongsFromIndexedDB() {
+            try {
+                const db = await openSongsDatabase();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction([STORE_SONGS], 'readwrite');
+                    const store = tx.objectStore(STORE_SONGS);
+                    const req = store.clear();
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.error('Erro ao limpar banco IndexedDB:', err);
+                return false;
+            }
+        }
+
+        function updateDatabaseStorageUI() {
+            const savedSongs = playlist.filter(t => t.type === 'local');
+            const totalBytes = savedSongs.reduce((acc, item) => acc + (item.fileSize || 0), 0);
+            const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+
+            const dbStorageLabel = document.getElementById('dbStorageLabel');
+            const dbSizeLabel = document.getElementById('dbSizeLabel');
+            const clearDbBtn = document.getElementById('clearDbBtn');
+
+            if (dbStorageLabel) {
+                dbStorageLabel.innerText = `Banco IndexedDB: ${savedSongs.length} ${savedSongs.length === 1 ? 'salva' : 'salvas'}`;
+            }
+            if (dbSizeLabel) {
+                dbSizeLabel.innerText = `${totalMB} MB armazenados permanentemente`;
+            }
+            if (clearDbBtn) {
+                clearDbBtn.disabled = savedSongs.length === 0;
+                clearDbBtn.classList.toggle('opacity-40', savedSongs.length === 0);
+                clearDbBtn.classList.toggle('cursor-not-allowed', savedSongs.length === 0);
+            }
+        }
+
+        // =========================================================================
+        // 2. INICIALIZAÇÃO PWA: SERVICE WORKER, INSTALL PROMPT, MEDIA SESSION & WAKE LOCK
+        // =========================================================================
+        let deferredInstallPrompt = null;
+        let wakeLockSentinel = null;
+
+        async function registerPWAServiceWorker() {
+            const swBadge = document.getElementById('swStatusBadge');
+            const pwaStatusLabel = document.getElementById('pwaStatusLabel');
+
+            if (!('serviceWorker' in navigator)) {
+                if (swBadge) swBadge.innerText = 'Modo Web + IndexedDB';
+                return;
+            }
+
+            try {
+                const swCode = `
+                    const CACHE_NAME = 'inspiracao-louvor-pwa-v1';
+                    const CORE_ASSETS = [
+                        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap',
+                        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+                    ];
+
+                    self.addEventListener('install', (event) => {
+                        self.skipWaiting();
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS).catch(() => {}))
+                        );
+                    });
+
+                    self.addEventListener('activate', (event) => {
+                        event.waitUntil(self.clients.claim());
+                    });
+
+                    self.addEventListener('fetch', (event) => {
+                        if (event.request.method !== 'GET') return;
+                        event.respondWith(
+                            caches.match(event.request).then((cached) => {
+                                const fetched = fetch(event.request).then((networkResponse) => {
+                                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                                        const clone = networkResponse.clone();
+                                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+                                    }
+                                    return networkResponse;
+                                }).catch(() => cached);
+                                return cached || fetched;
+                            })
+                        );
+                    });
+                `;
+
+                const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(swBlob);
+                await navigator.serviceWorker.register(swUrl);
+                if (swBadge) swBadge.innerText = 'Cache Offline Ativo';
+                if (pwaStatusLabel) pwaStatusLabel.innerText = 'PWA + Banco Ativo';
+            } catch (err) {
+                if (swBadge) swBadge.innerText = 'IndexedDB Persistente';
+                if (pwaStatusLabel) pwaStatusLabel.innerText = 'Banco Local Ativo';
+            }
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            const banner = document.getElementById('pwaInstallBanner');
+            if (banner && !sessionStorage.getItem('pwaBannerDismissed')) {
+                banner.classList.remove('hidden');
+            }
+            const headerInstallText = document.getElementById('headerInstallText');
+            if (headerInstallText) headerInstallText.innerText = 'Instalar App';
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            document.getElementById('pwaInstallBanner')?.classList.add('hidden');
+            const headerInstallBtn = document.getElementById('headerInstallBtn');
+            if (headerInstallBtn) {
+                headerInstallBtn.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span class="hidden sm:inline">App Instalado</span>`;
+            }
+            const pwaStatusLabel = document.getElementById('pwaStatusLabel');
+            if (pwaStatusLabel) pwaStatusLabel.innerText = 'App Instalado';
+            showToast('Rádio Gospel Inspiração e Louvor instalada com sucesso!');
+        });
+
+        async function triggerPWAInstall() {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                const { outcome } = await deferredInstallPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredInstallPrompt = null;
+                    document.getElementById('pwaInstallBanner')?.classList.add('hidden');
+                }
+            } else {
+                document.getElementById('iosInstallModal')?.classList.remove('hidden');
+            }
+        }
+
+        function dismissInstallBanner() {
+            document.getElementById('pwaInstallBanner')?.classList.add('hidden');
+            sessionStorage.setItem('pwaBannerDismissed', '1');
+        }
+
+        function closeIOSModal() {
+            document.getElementById('iosInstallModal')?.classList.add('hidden');
+        }
+
+        function updateNetworkStatus() {
+            const isOnline = navigator.onLine;
+            const dot = document.getElementById('pwaOnlineDot');
+            const netText = document.getElementById('networkStateText');
+            if (dot) {
+                dot.className = isOnline
+                    ? 'absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-navy-950'
+                    : 'absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-amber-400 border-2 border-navy-950';
+            }
+            if (netText) {
+                netText.innerText = isOnline ? 'Rede: Online' : 'Rede: Offline (Banco Local)';
+            }
+            if (!isOnline) {
+                showToast('Você está offline. Suas músicas salvas continuam disponíveis!');
+            }
+        }
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+
+        function updateMediaSessionMetadata(title, artist, album = 'Rádio Gospel Inspiração e Louvor • Ao Vivo & Auto DJ') {
+            if (!('mediaSession' in navigator)) return;
+            try {
+                const artworkUrl = window.__RADIO_ICON_512__ || '';
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: title,
+                    artist: artist,
+                    album: album,
+                    artwork: artworkUrl ? [
+                        { src: artworkUrl, sizes: '192x192', type: 'image/png' },
+                        { src: artworkUrl, sizes: '512x512', type: 'image/png' }
+                    ] : []
+                });
+
+                navigator.mediaSession.setActionHandler('play', () => {
+                    if (!isPlaying) toggleMasterAudio();
+                });
+                navigator.mediaSession.setActionHandler('pause', () => {
+                    if (isPlaying) pauseMasterAudio();
+                });
+                navigator.mediaSession.setActionHandler('previoustrack', () => prevTrack());
+                navigator.mediaSession.setActionHandler('nexttrack', () => nextTrack());
+            } catch (e) {
+                console.warn('MediaSession indisponível:', e);
+            }
+        }
+
+        function updateMediaSessionPlaybackState(playing) {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+            }
+        }
+
+        async function toggleWakeLock() {
+            const btn = document.getElementById('wakeLockBtn');
+            const text = document.getElementById('wakeLockText');
+
+            if (!('wakeLock' in navigator)) {
+                showToast('Seu navegador não suporta bloqueio de descanso de tela.');
+                return;
+            }
+
+            if (!wakeLockSentinel) {
+                try {
+                    wakeLockSentinel = await navigator.wakeLock.request('screen');
+                    wakeLockSentinel.addEventListener('release', () => {
+                        wakeLockSentinel = null;
+                        btn.className = 'bg-navy-950 hover:bg-white/10 text-gray-300 border border-white/10 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors';
+                        text.innerText = 'Tela Acesa: OFF';
+                    });
+                    btn.className = 'bg-gold-500/20 text-gold-300 border border-gold-500/40 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors';
+                    text.innerText = 'Tela Acesa: ON';
+                    showToast('Modo Estúdio: A tela permanecerá acesa durante a transmissão.');
+                } catch (err) {
+                    showToast('Não foi possível ativar o modo Tela Acesa.');
+                }
+            } else {
+                await wakeLockSentinel.release();
+                wakeLockSentinel = null;
+            }
+        }
+
+        // =========================================================================
+        // 3. ESTADO GLOBAL DA RÁDIO (AUTO DJ + AO VIVO + BUSCA + MIXER)
+        // =========================================================================
+        let broadcastMode = 'autodj'; // 'autodj' | 'live'
+        let isPlaying = false;
+        let isMuted = false;
+        let masterVolume = 0.85;
+        let duckingMultiplier = 1.0;
+        let searchQuery = '';
+
+        // Web Audio API
+        let audioCtx = null;
+        let masterAnalyser = null;
+        let mediaElementSource = null;
+        let animFrameId = null;
+
+        // Sintetizador Harmônico do Auto DJ (5 faixas instrumentais padrão)
+        let synthInterval = null;
+        let synthGainNode = null;
+        let synthStartTime = 0;
+        let synthDuration = 45;
+        let synthProgressTimer = null;
+
+        let currentTrackIndex = 0;
+        let isShuffle = false;
+        let repeatMode = 'all'; // 'all' | 'one' | 'none'
+
+        const defaultBuiltInTracks = [
+            {
+                id: 'demo-1',
+                title: 'Adoração Celestial (Piano & Pad)',
+                artist: 'Rádio Gospel Inspiração e Louvor • Louvor Instrumental',
+                duration: 45,
+                type: 'synth',
+                chordProgression: [[261.63, 329.63, 392.00], [220.00, 261.63, 329.63], [174.61, 220.00, 261.63], [196.00, 246.94, 293.66]]
+            },
+            {
+                id: 'demo-2',
+                title: 'Manhã de Paz e Comunhão',
+                artist: 'Ministério Harpa de Ouro • Fundo Devocional',
+                duration: 50,
+                type: 'synth',
+                chordProgression: [[293.66, 369.99, 440.00], [246.94, 293.66, 369.99], [196.00, 246.94, 293.66], [220.00, 277.18, 329.63]]
+            },
+            {
+                id: 'demo-3',
+                title: 'Clamor nas Madrugadas',
+                artist: 'Orquestra Adoradores • Oração & Intercessão',
+                duration: 40,
+                type: 'synth',
+                chordProgression: [[329.63, 392.00, 493.88], [261.63, 329.63, 392.00], [196.00, 246.94, 293.66], [293.66, 369.99, 440.00]]
+            },
+            {
+                id: 'demo-4',
+                title: 'Glória ao Rei Eterno',
+                artist: 'Coral Inspiração e Louvor • Medley Adoração',
+                duration: 48,
+                type: 'synth',
+                chordProgression: [[349.23, 440.00, 523.25], [261.63, 329.63, 392.00], [293.66, 349.23, 440.00], [233.08, 293.66, 349.23]]
+            },
+            {
+                id: 'demo-5',
+                title: 'Santo Espírito (Instrumental Suave)',
+                artist: 'Estúdio Inspiração e Louvor • Vigília 24h',
+                duration: 44,
+                type: 'synth',
+                chordProgression: [[246.94, 311.13, 369.99], [207.65, 246.94, 311.13], [164.81, 207.65, 246.94], [185.00, 233.08, 277.18]]
+            }
+        ];
+
+        let playlist = [...defaultBuiltInTracks];
+
+        // Microfone / Estúdio Ao Vivo
+        let micStream = null;
+        let micAnalyser = null;
+        let isMicActive = false;
+
+        // Elementos DOM
+        const radioAudio = document.getElementById('radioAudio');
+        const streamUrlInput = document.getElementById('streamUrlInput');
+        const canvas = document.getElementById('visualizerCanvas');
+        const canvasCtx = canvas.getContext('2d');
+        const visualizerPlaceholder = document.getElementById('visualizerPlaceholder');
+        const audioStatusText = document.getElementById('audioStatusText');
+
+        const scheduleData = [
+            { start: 6, end: 8, time: "06:00 - 08:00", title: "Despertar com Cristo", host: "Pr. João Batista" },
+            { start: 8, end: 12, time: "08:00 - 12:00", title: "Manhã de Inspiração & Adoração", host: "Pr. Marcos Andrade & Equipe" },
+            { start: 12, end: 14, time: "12:00 - 14:00", title: "Almoço com Louvor", host: "Cantora Sarah Lima" },
+            { start: 14, end: 18, time: "14:00 - 18:00", title: "Tarde Pentecostal", host: "Missionária Ana Paula" },
+            { start: 18, end: 21, time: "18:00 - 21:00", title: "Conexão Gospel Jovem", host: "DJ Gospel Gabriel" },
+            { start: 21, end: 24, time: "21:00 - 00:00", title: "Madrugada de Intercessão", host: "Ev. Roberto Silva" },
+            { start: 0, end: 6, time: "00:00 - 06:00", title: "Auto DJ • Vigília Inspiração e Louvor", host: "Programação Automática 24h" }
+        ];
+
+        const defaultMessages = [
+            { name: "Maria das Graças", city: "São Paulo - SP", msg: "Instalei o app da Rádio Gospel Inspiração e Louvor no celular! Muito abençoado.", time: "10:14" },
+            { name: "Carlos Eduardo", city: "Belo Horizonte - MG", msg: "Paz do Senhor! Orando por toda a equipe da Rádio Gospel Inspiração e Louvor.", time: "10:25" },
+            { name: "Fernanda Costa", city: "Salvador - BA", msg: "Peço oração pela minha família e um louvor de adoração!", time: "10:40" }
+        ];
+        let chatMessagesData = JSON.parse(localStorage.getItem('inspiracaoLouvorMessages')) || defaultMessages;
+
+        // =========================================================================
+        // 4. BOOTSTRAP AO CARREGAR A PÁGINA (RESTAURANDO MÚSICAS DO INDEXEDDB)
+        // =========================================================================
+        window.addEventListener('load', async () => {
+            registerPWAServiceWorker();
+            updateNetworkStatus();
+            renderSchedule();
+            renderMessages();
+
+            // Carregar músicas salvas anteriormente no banco de dados IndexedDB
+            const savedSongs = await loadAllSongsFromIndexedDB();
+            if (savedSongs.length > 0) {
+                savedSongs.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                const restoredTracks = savedSongs.map(item => {
+                    const objectUrl = URL.createObjectURL(item.blob);
+                    return {
+                        id: item.id,
+                        title: item.title,
+                        artist: item.artist || 'Salva no Banco • Auto DJ',
+                        duration: item.duration || 0,
+                        type: 'local',
+                        url: objectUrl,
+                        fileSize: item.fileSize || (item.blob ? item.blob.size : 0),
+                        savedInDb: true
+                    };
+                });
+                playlist = [...restoredTracks, ...defaultBuiltInTracks];
+                showToast(`${restoredTracks.length} música(s) restaurada(s) do banco de dados!`);
+            }
+
+            updateDatabaseStorageUI();
+            renderPlaylist();
+            updateNowPlayingUI();
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                document.getElementById('pwaInstallBanner')?.classList.add('hidden');
+                const headerInstallBtn = document.getElementById('headerInstallBtn');
+                if (headerInstallBtn) {
+                    headerInstallBtn.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span class="hidden sm:inline">App Ativo</span>`;
+                }
+            }
+
+            radioAudio.addEventListener('ended', () => {
+                if (broadcastMode === 'autodj') handleTrackEnded();
+            });
+
+            radioAudio.addEventListener('timeupdate', () => {
+                const track = playlist[currentTrackIndex];
+                if (broadcastMode === 'autodj' && track && track.type === 'local' && radioAudio.duration) {
+                    updateProgressUI(radioAudio.currentTime, radioAudio.duration);
+                }
+            });
+
+            radioAudio.addEventListener('loadedmetadata', async () => {
+                const track = playlist[currentTrackIndex];
+                if (track && track.type === 'local' && radioAudio.duration && !isNaN(radioAudio.duration)) {
+                    const realDuration = Math.floor(radioAudio.duration);
+                    if (track.duration !== realDuration) {
+                        track.duration = realDuration;
+                        renderPlaylist();
+                        // Atualizar duração real no IndexedDB
+                        const allDbSongs = await loadAllSongsFromIndexedDB();
+                        const dbMatch = allDbSongs.find(s => s.id === track.id);
+                        if (dbMatch) {
+                            dbMatch.duration = realDuration;
+                            await saveSongToIndexedDB(dbMatch);
+                        }
+                    }
+                }
+            });
+        });
+
+        function resizeCanvas() {
+            if (!canvas.parentElement) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (!masterAnalyser) {
+                masterAnalyser = audioCtx.createAnalyser();
+                masterAnalyser.fftSize = 128;
+                masterAnalyser.connect(audioCtx.destination);
+            }
+            if (!mediaElementSource && radioAudio) {
+                try {
+                    mediaElementSource = audioCtx.createMediaElementSource(radioAudio);
+                    mediaElementSource.connect(masterAnalyser);
+                } catch (e) {}
+            }
+        }
+
+        // =========================================================================
+        // 5. FILTRO DE BUSCA COM LUPA NA BIBLIOTECA DO AUTO DJ
+        // =========================================================================
+        function filterPlaylist(query) {
+            searchQuery = (query || '').trim().toLowerCase();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (clearBtn) {
+                if (searchQuery.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+            renderPlaylist();
+        }
+
+        function clearSearchQuery() {
+            const input = document.getElementById('playlistSearchInput');
+            if (input) input.value = '';
+            filterPlaylist('');
+            input?.focus();
+        }
+
+        // =========================================================================
+        // 6. ALTERNÂNCIA DE MODO: AO VIVO vs. AUTO DJ
+        // =========================================================================
+        function updateModeBadges() {
+            const headerBadge = document.getElementById('headerModeBadge');
+            const headerIcon = document.getElementById('headerModeIcon');
+            const headerText = document.getElementById('headerModeText');
+            const navLiveDot = document.getElementById('navLiveDot');
+
+            const heroBadge = document.getElementById('heroModeBadge');
+            const heroEmoji = document.getElementById('heroModeEmoji');
+            const heroLabel = document.getElementById('heroModeLabel');
+            const heroLiveBtn = document.getElementById('heroLiveSwitchBtn');
+            const heroLiveText = document.getElementById('heroLiveSwitchText');
+
+            const btnModeAutoDj = document.getElementById('btnModeAutoDj');
+            const btnModeLive = document.getElementById('btnModeLive');
+
+            if (broadcastMode === 'live') {
+                if (headerBadge) {
+                    headerBadge.className = "hidden xl:flex items-center gap-2 bg-red-500/20 border border-red-500/40 text-red-300 text-xs px-3 py-1.5 rounded-full font-bold pulse-live";
+                    headerIcon.textContent = "🔴";
+                    headerText.textContent = "AO VIVO - LOCUÇÃO";
+                }
+                if (navLiveDot) navLiveDot.className = "w-2 h-2 rounded-full bg-red-500 animate-ping";
+
+                heroBadge.className = "inline-flex items-center gap-2 bg-red-500/20 text-red-300 border border-red-500/40 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide pulse-live";
+                heroEmoji.textContent = "🔴";
+                heroLabel.textContent = "AO VIVO - LOCUÇÃO";
+
+                heroLiveBtn.className = "bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold px-5 py-3.5 sm:py-4 rounded-2xl transition-all flex items-center gap-2 text-xs sm:text-sm";
+                heroLiveText.textContent = "Voltar ao Auto DJ";
+
+                btnModeLive.className = "px-3.5 py-2 rounded-lg text-xs font-bold bg-red-500 text-white transition-all flex items-center gap-1.5";
+                btnModeAutoDj.className = "px-3.5 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition-all flex items-center gap-1.5";
+            } else {
+                if (headerBadge) {
+                    headerBadge.className = "hidden xl:flex items-center gap-2 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs px-3 py-1.5 rounded-full font-semibold";
+                    headerIcon.textContent = "🤖";
+                    headerText.textContent = "AUTO DJ - PROGRAMAÇÃO MUSICAL";
+                }
+                if (navLiveDot) navLiveDot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
+
+                heroBadge.className = "inline-flex items-center gap-2 bg-amber-500/15 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide";
+                heroEmoji.textContent = "🤖";
+                heroLabel.textContent = "AUTO DJ - PROGRAMAÇÃO MUSICAL";
+
+                heroLiveBtn.className = "bg-red-500/15 hover:bg-red-500/25 text-red-300 border border-red-500/40 font-semibold px-5 py-3.5 sm:py-4 rounded-2xl transition-all flex items-center gap-2 text-xs sm:text-sm";
+                heroLiveText.textContent = "Entrar Ao Vivo";
+
+                btnModeAutoDj.className = "px-3.5 py-2 rounded-lg text-xs font-bold bg-gold-500 text-navy-950 transition-all flex items-center gap-1.5";
+                btnModeLive.className = "px-3.5 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition-all flex items-center gap-1.5";
+            }
+        }
+
+        function toggleLiveBroadcastMode() {
+            if (broadcastMode === 'autodj') switchToLiveMode();
+            else switchToAutoDjMode();
+        }
+
+        function switchToLiveMode() {
+            broadcastMode = 'live';
+            updateModeBadges();
+            const streamUrl = streamUrlInput.value.trim();
+
+            if (streamUrl) {
+                initAudioContext();
+                fadeOutAutoDj(() => {
+                    stopSynthTrack();
+                    radioAudio.src = streamUrl;
+                    radioAudio.volume = isMuted ? 0 : masterVolume;
+                    radioAudio.play().then(() => {
+                        isPlaying = true;
+                        updatePlayButtons(true);
+                        updateMediaSessionPlaybackState(true);
+                        updateMediaSessionMetadata("Transmissão Ao Vivo", "Rádio Gospel Inspiração e Louvor • Streaming HD");
+
+                        visualizerPlaceholder.style.display = 'none';
+                        audioStatusText.innerText = "Ao Vivo (Stream)";
+                        audioStatusText.className = "text-xs font-medium px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30";
+                        document.getElementById('currentShowTitle').innerText = "Transmissão Ao Vivo • Inspiração e Louvor";
+                        document.getElementById('currentShowHost').innerHTML = `<i class="fa-solid fa-tower-broadcast text-red-400"></i> <span>Sinal Ao Vivo Conectado</span>`;
+                        document.getElementById('nowPlayingSourceLabel').innerText = "AO VIVO • STREAMING HD";
+                        document.getElementById('songTitle').innerText = "Programação Ao Vivo no Ar";
+                        document.getElementById('songArtist').innerText = streamUrl;
+                        startVisualizer();
+                    }).catch(() => {
+                        showToast("Stream externo indisponível. Ativando estúdio de microfone...");
+                        if (!isMicActive) toggleMicrophone();
+                    });
+                });
+            } else {
+                if (!isMicActive) toggleMicrophone();
+                else updateNowPlayingUI();
+            }
+        }
+
+        function switchToAutoDjMode() {
+            if (isMicActive) stopMicrophoneInternal();
+            broadcastMode = 'autodj';
+            duckingMultiplier = 1.0;
+            document.getElementById('duckingIndicator').classList.add('hidden');
+            document.getElementById('duckingIndicator').classList.remove('inline-flex');
+            updateModeBadges();
+            updateNowPlayingUI();
+            playAutoDjTrack(currentTrackIndex, true);
+        }
+
+        function connectExternalStream() {
+            const url = streamUrlInput.value.trim();
+            if (!url) {
+                showToast("Cole uma URL de stream válida ou use o Microfone do Estúdio.");
+                return;
+            }
+            switchToLiveMode();
+        }
+
+        // =========================================================================
+        // 7. PLAYER MASTER & AUTO DJ (SINTETIZADOR + ARQUIVOS DO INDEXEDDB)
+        // =========================================================================
+        function toggleMasterAudio() {
+            if (isPlaying) {
+                pauseMasterAudio();
+            } else {
+                if (broadcastMode === 'live' && streamUrlInput.value.trim()) {
+                    switchToLiveMode();
+                } else {
+                    broadcastMode = 'autodj';
+                    updateModeBadges();
+                    playAutoDjTrack(currentTrackIndex, true);
+                }
+            }
+        }
+
+        function pauseMasterAudio() {
+            isPlaying = false;
+            radioAudio.pause();
+            stopSynthTrack();
+            updatePlayButtons(false);
+            updateMediaSessionPlaybackState(false);
+            audioStatusText.innerText = "Pausado";
+            audioStatusText.className = "text-xs font-medium px-2.5 py-0.5 rounded bg-gray-800 text-gray-400";
+            if (!isMicActive) visualizerPlaceholder.style.display = 'flex';
+            renderPlaylist();
+        }
+
+        function playAutoDjTrack(index, withFadeIn = true) {
+            if (playlist.length === 0) {
+                showToast("A playlist está vazia. Adicione músicas MP3/WAV!");
+                return;
+            }
+
+            currentTrackIndex = (index + playlist.length) % playlist.length;
+            const track = playlist[currentTrackIndex];
+
+            initAudioContext();
+            stopSynthTrack();
+            radioAudio.pause();
+
+            isPlaying = true;
+            updatePlayButtons(true);
+            updateNowPlayingUI();
+            renderPlaylist();
+
+            updateMediaSessionMetadata(track.title, track.artist, "Rádio Gospel Inspiração e Louvor • Auto DJ 24h");
+            updateMediaSessionPlaybackState(true);
+
+            visualizerPlaceholder.style.display = 'none';
+            audioStatusText.innerText = "Auto DJ • No Ar";
+            audioStatusText.className = "text-xs font-medium px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            startVisualizer();
+
+            const targetVol = isMuted ? 0 : (masterVolume * duckingMultiplier);
+
+            if (track.type === 'local') {
+                radioAudio.src = track.url;
+                radioAudio.volume = withFadeIn ? 0.05 : targetVol;
+                radioAudio.play().then(() => {
+                    if (withFadeIn) smoothVolumeTo(targetVol, 800);
+                }).catch(() => nextTrack());
+            } else {
+                startSynthTrack(track, withFadeIn ? 0.05 : targetVol, targetVol);
+            }
+        }
+
+        function startSynthTrack(track, initialVol, targetVol) {
+            synthDuration = track.duration || 45;
+            synthStartTime = Date.now();
+
+            synthGainNode = audioCtx.createGain();
+            synthGainNode.gain.setValueAtTime(initialVol * 0.35, audioCtx.currentTime);
+            synthGainNode.gain.linearRampToValueAtTime(targetVol * 0.35, audioCtx.currentTime + 0.8);
+            synthGainNode.connect(masterAnalyser);
+
+            let chordIdx = 0;
+            const playChord = () => {
+                if (!isPlaying || broadcastMode !== 'autodj') return;
+                const chord = track.chordProgression[chordIdx % track.chordProgression.length];
+                chordIdx++;
+
+                const now = audioCtx.currentTime;
+                chord.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const noteGain = audioCtx.createGain();
+                    osc.type = i === 0 ? 'triangle' : 'sine';
+                    osc.frequency.setValueAtTime(freq, now);
+
+                    noteGain.gain.setValueAtTime(0.001, now);
+                    noteGain.gain.linearRampToValueAtTime(0.22 / chord.length, now + 0.6);
+                    noteGain.gain.exponentialRampToValueAtTime(0.001, now + 3.8);
+
+                    osc.connect(noteGain);
+                    noteGain.connect(synthGainNode);
+
+                    osc.start(now);
+                    osc.stop(now + 3.9);
+                });
+            };
+
+            playChord();
+            synthInterval = setInterval(playChord, 3800);
+
+            synthProgressTimer = setInterval(() => {
+                if (!isPlaying) return;
+                const elapsed = (Date.now() - synthStartTime) / 1000;
+                updateProgressUI(elapsed, synthDuration);
+                if (elapsed >= synthDuration) handleTrackEnded();
+            }, 250);
+        }
+
+        function stopSynthTrack() {
+            if (synthInterval) { clearInterval(synthInterval); synthInterval = null; }
+            if (synthProgressTimer) { clearInterval(synthProgressTimer); synthProgressTimer = null; }
+            if (synthGainNode && audioCtx) {
+                try { synthGainNode.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.1); } catch (e) {}
+                synthGainNode = null;
+            }
+        }
+
+        function fadeOutAutoDj(callback) {
+            smoothVolumeTo(0, 450, () => {
+                radioAudio.pause();
+                stopSynthTrack();
+                if (callback) callback();
+            });
+        }
+
+        function smoothVolumeTo(target, durationMs, onComplete) {
+            const track = playlist[currentTrackIndex];
+            if (track && track.type === 'synth' && synthGainNode && audioCtx) {
+                synthGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+                synthGainNode.gain.setTargetAtTime(target * 0.35, audioCtx.currentTime, durationMs / 3000);
+                if (onComplete) setTimeout(onComplete, durationMs);
+                return;
+            }
+
+            const startVol = radioAudio.volume;
+            const steps = 15;
+            const stepTime = durationMs / steps;
+            let step = 0;
+
+            const timer = setInterval(() => {
+                step++;
+                const ratio = step / steps;
+                radioAudio.volume = Math.max(0, Math.min(1, startVol + (target - startVol) * ratio));
+                if (step >= steps) {
+                    clearInterval(timer);
+                    radioAudio.volume = Math.max(0, Math.min(1, target));
+                    if (onComplete) onComplete();
+                }
+            }, stepTime);
+        }
+
+        function handleTrackEnded() {
+            if (repeatMode === 'one') {
+                playAutoDjTrack(currentTrackIndex, false);
+                return;
+            }
+            if (isShuffle) {
+                let nextIdx = Math.floor(Math.random() * playlist.length);
+                if (playlist.length > 1 && nextIdx === currentTrackIndex) nextIdx = (currentTrackIndex + 1) % playlist.length;
+                playAutoDjTrack(nextIdx, true);
+                return;
+            }
+            if (currentTrackIndex + 1 < playlist.length) {
+                playAutoDjTrack(currentTrackIndex + 1, true);
+            } else if (repeatMode === 'all') {
+                playAutoDjTrack(0, true);
+            } else {
+                pauseMasterAudio();
+            }
+        }
+
+        function nextTrack() {
+            if (broadcastMode !== 'autodj') { switchToAutoDjMode(); return; }
+            if (isShuffle && playlist.length > 1) {
+                let nextIdx = Math.floor(Math.random() * playlist.length);
+                if (nextIdx === currentTrackIndex) nextIdx = (currentTrackIndex + 1) % playlist.length;
+                playAutoDjTrack(nextIdx, true);
+            } else {
+                playAutoDjTrack(currentTrackIndex + 1, true);
+            }
+        }
+
+        function prevTrack() {
+            if (broadcastMode !== 'autodj') { switchToAutoDjMode(); return; }
+            playAutoDjTrack(currentTrackIndex - 1, true);
+        }
+
+        function seekTrack(event) {
+            const track = playlist[currentTrackIndex];
+            if (!track || broadcastMode !== 'autodj') return;
+            const rect = event.currentTarget.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+
+            if (track.type === 'local' && radioAudio.duration) {
+                radioAudio.currentTime = ratio * radioAudio.duration;
+            } else if (track.type === 'synth' && isPlaying) {
+                synthStartTime = Date.now() - (ratio * synthDuration * 1000);
+                updateProgressUI(ratio * synthDuration, synthDuration);
+            }
+        }
+
+        function updateProgressUI(currentSec, totalSec) {
+            const pct = totalSec > 0 ? Math.min(100, (currentSec / totalSec) * 100) : 0;
+            document.getElementById('trackProgressBar').style.width = pct + '%';
+            document.getElementById('trackCurrentTime').innerText = formatDuration(currentSec);
+            document.getElementById('trackTotalTime').innerText = formatDuration(totalSec);
+        }
+
+        function formatDuration(sec) {
+            if (!sec || isNaN(sec)) return "00:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updateNowPlayingUI() {
+            const track = playlist[currentTrackIndex];
+            if (broadcastMode === 'autodj' && track) {
+                document.getElementById('currentShowTitle').innerText = "Rádio Gospel Inspiração e Louvor";
+                document.getElementById('currentShowHost').innerHTML = `<i class="fa-solid fa-robot text-gold-400"></i> <span>Auto DJ Inspiração e Louvor • Seleção Contínua 24h</span>`;
+                document.getElementById('nowPlayingSourceLabel').innerText = `AUTO DJ • FAIXA ${currentTrackIndex + 1} DE ${playlist.length}`;
+                document.getElementById('songTitle').innerText = track.title;
+                document.getElementById('songArtist').innerText = track.artist;
+                document.getElementById('trackTotalTime').innerText = formatDuration(track.duration);
+                document.getElementById('trackModeHint').innerText = isPlaying ? "Tocando Agora" : "Aguardando Play";
+            }
+        }
+
+        function updatePlayButtons(playing) {
+            const masterIcon = document.getElementById('masterPlayIcon');
+            const quickIcon = document.getElementById('quickPlayIcon');
+            const heroIcon = document.getElementById('heroPlayIcon');
+            const quickText = document.getElementById('quickPlayText');
+            const heroText = document.getElementById('heroPlayText');
+
+            if (playing) {
+                masterIcon.className = "fa-solid fa-pause";
+                quickIcon.className = "fa-solid fa-pause";
+                heroIcon.className = "fa-solid fa-pause";
+                quickText.innerText = "Pausar";
+                heroText.innerText = broadcastMode === 'live' ? "PAUSAR AO VIVO" : "PAUSAR AUTO DJ";
+            } else {
+                masterIcon.className = "fa-solid fa-play";
+                quickIcon.className = "fa-solid fa-play";
+                heroIcon.className = "fa-solid fa-play";
+                quickText.innerText = "Ouvir";
+                heroText.innerText = "LIGAR RÁDIO (AUTO DJ)";
+            }
+        }
+
+        // =========================================================================
+        // 8. PLAYLIST DO AUTO DJ + SALVAMENTO E EXCLUSÃO NO BANCO DE DADOS
+        // =========================================================================
+        async function handleFilesUpload(event) {
+            const files = Array.from(event.target.files);
+            if (!files.length) return;
+
+            const wasEmpty = playlist.length === 0;
+            const firstNewIndex = playlist.length;
+            let savedCount = 0;
+
+            for (const file of files) {
+                const trackId = 'db-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+                const cleanName = file.name.replace(/\.[^/.]+$/, "");
+                const objectUrl = URL.createObjectURL(file);
+
+                const dbRecord = {
+                    id: trackId,
+                    title: cleanName,
+                    artist: 'Salva no Banco • Auto DJ',
+                    duration: 0,
+                    fileSize: file.size,
+                    mimeType: file.type || 'audio/mpeg',
+                    blob: file,
+                    createdAt: Date.now()
+                };
+
+                const savedOk = await saveSongToIndexedDB(dbRecord);
+                if (savedOk) savedCount++;
+
+                playlist.push({
+                    id: trackId,
+                    title: cleanName,
+                    artist: savedOk ? 'Salva no Banco • Auto DJ' : 'Sessão Atual • Auto DJ',
+                    duration: 0,
+                    type: 'local',
+                    url: objectUrl,
+                    fileSize: file.size,
+                    savedInDb: savedOk
+                });
+            }
+
+            updateDatabaseStorageUI();
+            renderPlaylist();
+
+            if (savedCount > 0) {
+                showToast(`${savedCount} música(s) salva(s) permanentemente no banco de dados!`);
+            } else {
+                showToast(`${files.length} música(s) adicionada(s) à fila!`);
+            }
+
+            if (wasEmpty || (!isPlaying && broadcastMode === 'autodj')) {
+                playAutoDjTrack(firstNewIndex, true);
+            }
+            event.target.value = '';
+        }
+
+        async function removeTrack(index, event) {
+            event.stopPropagation();
+            const removed = playlist[index];
+            if (!removed) return;
+
+            if (removed.url) URL.revokeObjectURL(removed.url);
+            if (removed.type === 'local' && removed.id) {
+                await deleteSongFromIndexedDB(removed.id);
+            }
+
+            playlist.splice(index, 1);
+
+            if (playlist.length === 0) {
+                pauseMasterAudio();
+                currentTrackIndex = 0;
+            } else if (index === currentTrackIndex) {
+                currentTrackIndex = currentTrackIndex % playlist.length;
+                if (isPlaying && broadcastMode === 'autodj') playAutoDjTrack(currentTrackIndex, false);
+            } else if (index < currentTrackIndex) {
+                currentTrackIndex--;
+            }
+
+            updateDatabaseStorageUI();
+            updateNowPlayingUI();
+            renderPlaylist();
+            showToast('Música removida do banco de dados.');
+        }
+
+        function confirmClearDatabase() {
+            const hasSaved = playlist.some(t => t.type === 'local');
+            if (!hasSaved) return;
+            document.getElementById('clearDbConfirmBox')?.classList.remove('hidden');
+        }
+
+        function cancelClearDatabase() {
+            document.getElementById('clearDbConfirmBox')?.classList.add('hidden');
+        }
+
+        async function executeClearDatabase() {
+            document.getElementById('clearDbConfirmBox')?.classList.add('hidden');
+
+            playlist.forEach(t => {
+                if (t.url) URL.revokeObjectURL(t.url);
+            });
+
+            await clearAllSavedSongsFromIndexedDB();
+            playlist = [...defaultBuiltInTracks];
+            currentTrackIndex = 0;
+
+            if (isPlaying && broadcastMode === 'autodj') {
+                playAutoDjTrack(0, true);
+            } else {
+                updateNowPlayingUI();
+            }
+
+            updateDatabaseStorageUI();
+            renderPlaylist();
+            showToast('Músicas enviadas foram apagadas do banco de dados.');
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            const btn = document.getElementById('shuffleBtn');
+            if (isShuffle) {
+                btn.className = "bg-gold-500/20 text-gold-300 border border-gold-500/40 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors";
+                btn.innerHTML = `<i class="fa-solid fa-shuffle"></i><span>Aleatório: ON</span>`;
+            } else {
+                btn.className = "bg-navy-900 hover:bg-white/10 text-gray-300 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors";
+                btn.innerHTML = `<i class="fa-solid fa-shuffle"></i><span>Aleatório: OFF</span>`;
+            }
+        }
+
+        function toggleRepeat() {
+            const btn = document.getElementById('repeatBtn');
+            if (repeatMode === 'all') {
+                repeatMode = 'one';
+                btn.innerHTML = `<i class="fa-solid fa-repeat"></i><span>Repetir: UMA</span>`;
+            } else if (repeatMode === 'one') {
+                repeatMode = 'none';
+                btn.className = "bg-navy-900 hover:bg-white/10 text-gray-300 border border-white/10 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors";
+                btn.innerHTML = `<i class="fa-solid fa-repeat"></i><span>Repetir: OFF</span>`;
+            } else {
+                repeatMode = 'all';
+                btn.className = "bg-gold-500/20 text-gold-300 border border-gold-500/40 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors";
+                btn.innerHTML = `<i class="fa-solid fa-repeat"></i><span>Repetir: TODOS</span>`;
+            }
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            const summary = document.getElementById('playlistSummary');
+
+            if (playlist.length === 0) {
+                summary.innerText = '0 faixas na programação';
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-400 text-sm bg-navy-950/50 rounded-2xl border border-dashed border-white/10">
+                        Nenhuma música na playlist. Toque em <strong>"Adicionar &amp; Salvar Músicas"</strong> acima para carregar seus louvores.
+                    </div>
+                `;
+                return;
+            }
+
+            // Construir lista mapeada mantendo o índice original na playlist
+            const mappedItems = playlist
+                .map((track, originalIndex) => ({ track, originalIndex }))
+                .filter(({ track }) => {
+                    if (!searchQuery) return true;
+                    const titleMatch = (track.title || '').toLowerCase().includes(searchQuery);
+                    const artistMatch = (track.artist || '').toLowerCase().includes(searchQuery);
+                    return titleMatch || artistMatch;
+                });
+
+            if (searchQuery) {
+                summary.innerText = `Exibindo ${mappedItems.length} de ${playlist.length} faixa(s) para "${searchQuery}"`;
+            } else {
+                summary.innerText = `${playlist.length} faixa(s) na biblioteca do Auto DJ`;
+            }
+
+            if (mappedItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-400 text-sm bg-navy-950/50 rounded-2xl border border-dashed border-white/10 space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-2xl text-gold-400/60"></i>
+                        <p>Nenhuma música encontrada para <strong>"${escapeHTML(searchQuery)}"</strong>.</p>
+                        <button onclick="clearSearchQuery()" class="text-xs text-gold-400 hover:underline font-semibold">Limpar filtro de busca</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = mappedItems.map(({ track, originalIndex }) => {
+                const isCurrent = originalIndex === currentTrackIndex && broadcastMode === 'autodj';
+                const isActivePlaying = isCurrent && isPlaying;
+                const isSavedInDb = track.type === 'local' && track.savedInDb;
+
+                return `
+                    <div onclick="playAutoDjTrack(${originalIndex}, true)" class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                        isCurrent
+                        ? 'bg-gold-500/15 border-gold-500/50 shadow-md shadow-gold-500/5'
+                        : 'bg-navy-950/60 border-white/5 hover:border-white/15 hover:bg-navy-900/60'
+                    }">
+                        <div class="flex items-center gap-3.5 overflow-hidden">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                                isCurrent ? 'bg-gold-500 text-navy-950 font-bold' : 'bg-navy-900 text-gray-400'
+                            }">
+                                ${isActivePlaying
+                                    ? `<div class="flex items-end gap-0.5 h-4">
+                                         <span class="w-1 bg-navy-950 animate-pulse h-2"></span>
+                                         <span class="w-1 bg-navy-950 animate-bounce h-4"></span>
+                                         <span class="w-1 bg-navy-950 animate-pulse h-3"></span>
+                                       </div>`
+                                    : `<span class="text-xs font-mono">${originalIndex + 1}</span>`
+                                }
+                            </div>
+                            <div class="overflow-hidden">
+                                <div class="flex items-center gap-2">
+                                    <h5 class="font-bold text-sm truncate ${isCurrent ? 'text-gold-300' : 'text-white'}">${escapeHTML(track.title)}</h5>
+                                    ${isSavedInDb
+                                        ? `<span title="Salva permanentemente no Banco de Dados" class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold flex-shrink-0"><i class="fa-solid fa-database text-[9px] mr-0.5"></i>Salva</span>`
+                                        : `<span class="text-[10px] px-1.5 py-0.2 rounded bg-white/5 text-gray-400 border border-white/10 font-medium flex-shrink-0">Padrão</span>`
+                                    }
+                                </div>
+                                <p class="text-xs text-gray-400 truncate">${escapeHTML(track.artist)}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2.5 flex-shrink-0">
+                            <span class="text-[11px] px-2 py-0.5 rounded bg-white/5 text-gray-400 font-mono">
+                                ${track.duration ? formatDuration(track.duration) : 'ÁUDIO'}
+                            </span>
+                            <button onclick="removeTrack(${originalIndex}, event)" title="Remover faixa" class="w-8 h-8 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-colors flex items-center justify-center">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =========================================================================
+        // 9. VOLUME, MICROFONE & AUTO-DUCKING NO ESTÚDIO
+        // =========================================================================
+        function changeVolume(val) {
+            masterVolume = parseFloat(val);
+            isMuted = masterVolume === 0;
+            applyCurrentAudioGain(150);
+            updateVolumeIcon(masterVolume);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            applyCurrentAudioGain(150);
+            updateVolumeIcon(isMuted ? 0 : masterVolume);
+        }
+
+        function applyCurrentAudioGain(fadeMs = 300) {
+            const effectiveVol = isMuted ? 0 : (masterVolume * duckingMultiplier);
+            smoothVolumeTo(effectiveVol, fadeMs);
+        }
+
+        function updateVolumeIcon(val) {
+            const icon = document.getElementById('volumeIcon');
+            if (val == 0 || isMuted) icon.className = "fa-solid fa-volume-xmark text-red-400";
+            else if (val < 0.5) icon.className = "fa-solid fa-volume-low text-gold-400";
+            else icon.className = "fa-solid fa-volume-high text-gold-400";
+        }
+
+        async function toggleMicrophone() {
+            if (!isMicActive) {
+                try {
+                    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    initAudioContext();
+
+                    const micSource = audioCtx.createMediaStreamSource(micStream);
+                    micAnalyser = audioCtx.createAnalyser();
+                    micAnalyser.fftSize = 64;
+                    micSource.connect(micAnalyser);
+
+                    isMicActive = true;
+                    broadcastMode = 'live';
+                    updateModeBadges();
+                    updateMediaSessionMetadata("Locução Ao Vivo • Estúdio", "Rádio Gospel Inspiração e Louvor");
+
+                    const useDucking = document.getElementById('duckingModeCheckbox').checked;
+                    const duckingBadge = document.getElementById('duckingIndicator');
+
+                    if (useDucking) {
+                        duckingMultiplier = 0.20;
+                        duckingBadge.classList.remove('hidden');
+                        duckingBadge.classList.add('inline-flex');
+
+                        if (!isPlaying) {
+                            playAutoDjTrack(currentTrackIndex, false);
+                            broadcastMode = 'live';
+                            updateModeBadges();
+                        } else {
+                            applyCurrentAudioGain(450);
+                        }
+                    } else {
+                        if (isPlaying) {
+                            fadeOutAutoDj(() => {
+                                isPlaying = false;
+                                updatePlayButtons(false);
+                            });
+                        }
+                    }
+
+                    document.getElementById('micIcon').className = "fa-solid fa-microphone-lines text-red-600 animate-pulse";
+                    document.getElementById('micActionText').innerText = "Encerrar Locução Ao Vivo";
+                    document.getElementById('micSubText').innerText = useDucking
+                        ? "Auto DJ reduzido para 20% (fundo musical ativo)"
+                        : "Auto DJ pausado • Somente voz no ar";
+
+                    const micBadge = document.getElementById('micStatusBadge');
+                    micBadge.className = "bg-red-500/20 text-red-400 text-xs px-3 py-2 rounded-full font-bold border border-red-500/40 flex items-center gap-2 pulse-live";
+                    micBadge.innerHTML = `<i class="fa-solid fa-circle text-[8px]"></i> NO AR (LOCUTOR)`;
+                    document.getElementById('micButtonWrapper').classList.add('border-red-500', 'shadow-lg', 'shadow-red-500/30');
+
+                    document.getElementById('currentShowTitle').innerText = "Locução Ao Vivo • Inspiração e Louvor";
+                    document.getElementById('currentShowHost').innerHTML = `<i class="fa-solid fa-microphone-lines text-red-400"></i> <span>Apresentador Ao Vivo no Ar</span>`;
+                    visualizerPlaceholder.style.display = 'none';
+                    audioStatusText.innerText = "Ao Vivo (Microfone)";
+                    audioStatusText.className = "text-xs font-medium px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30";
+
+                    startVisualizer();
+                    updateVUMeter();
+                } catch (err) {
+                    showToast("Permissão de microfone negada ou dispositivo indisponível.");
+                }
+            } else {
+                stopMicrophoneInternal();
+                broadcastMode = 'autodj';
+                duckingMultiplier = 1.0;
+
+                document.getElementById('duckingIndicator').classList.add('hidden');
+                document.getElementById('duckingIndicator').classList.remove('inline-flex');
+                updateModeBadges();
+                updateNowPlayingUI();
+
+                const track = playlist[currentTrackIndex];
+                if (track) updateMediaSessionMetadata(track.title, track.artist, "Rádio Gospel Inspiração e Louvor • Auto DJ 24h");
+
+                if (isPlaying) {
+                    applyCurrentAudioGain(600);
+                    audioStatusText.innerText = "Auto DJ • No Ar";
+                    audioStatusText.className = "text-xs font-medium px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30";
+                } else {
+                    playAutoDjTrack(currentTrackIndex, true);
+                }
+                showToast("Locução encerrada. Auto DJ assumiu a programação!");
+            }
+        }
+
+        function stopMicrophoneInternal() {
+            if (micStream) {
+                micStream.getTracks().forEach(track => track.stop());
+                micStream = null;
+            }
+            isMicActive = false;
+            micAnalyser = null;
+
+            document.getElementById('micIcon').className = "fa-solid fa-microphone";
+            document.getElementById('micActionText').innerText = "Entrar Ao Vivo no Microfone";
+            document.getElementById('micSubText').innerText = "Baixa o Auto DJ suavemente para 20% enquanto você fala";
+
+            const micBadge = document.getElementById('micStatusBadge');
+            micBadge.className = "bg-gray-800 text-gray-400 text-xs px-3 py-2 rounded-full font-semibold border border-white/5 flex items-center gap-2";
+            micBadge.innerHTML = `<i class="fa-solid fa-circle text-[8px]"></i> Mic Desligado`;
+            document.getElementById('micButtonWrapper').classList.remove('border-red-500', 'shadow-lg', 'shadow-red-500/30');
+            document.getElementById('vuMeterBar').style.width = '0%';
+            document.getElementById('vuLevelText').innerText = '0%';
+        }
+
+        function updateVUMeter() {
+            if (!isMicActive || !micAnalyser) return;
+            const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
+            micAnalyser.getByteFrequencyData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+            const percentage = Math.min(Math.round(((sum / dataArray.length) / 128) * 100), 100);
+
+            document.getElementById('vuMeterBar').style.width = percentage + '%';
+            document.getElementById('vuLevelText').innerText = percentage + '%';
+            requestAnimationFrame(updateVUMeter);
+        }
+
+        // =========================================================================
+        // 10. VISUALIZADOR DE ESPECTRO SONORO (CANVAS 60FPS)
+        // =========================================================================
+        function startVisualizer() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+
+            const bufferLength = 48;
+            const masterData = new Uint8Array(bufferLength);
+            const micData = new Uint8Array(bufferLength);
+
+            function draw() {
+                animFrameId = requestAnimationFrame(draw);
+                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (masterAnalyser && isPlaying) masterAnalyser.getByteFrequencyData(masterData);
+                else masterData.fill(0);
+
+                if (micAnalyser && isMicActive) micAnalyser.getByteFrequencyData(micData);
+                else micData.fill(0);
+
+                const barWidth = (canvas.width / bufferLength) * 0.85;
+                const gap = (canvas.width / bufferLength) * 0.15;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const combinedVal = Math.max(masterData[i] || 0, micData[i] || 0);
+                    const barHeight = Math.max(4, (combinedVal / 255) * canvas.height * 0.85);
+
+                    const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, 0);
+                    if (isMicActive && micData[i] > masterData[i]) {
+                        gradient.addColorStop(0, '#DC2626');
+                        gradient.addColorStop(0.6, '#FBBF24');
+                        gradient.addColorStop(1, '#FFFFFF');
+                    } else {
+                        gradient.addColorStop(0, '#1D4ED8');
+                        gradient.addColorStop(0.5, '#FBBF24');
+                        gradient.addColorStop(1, '#FEF3C7');
+                    }
+
+                    canvasCtx.fillStyle = gradient;
+                    canvasCtx.beginPath();
+                    canvasCtx.roundRect(x, canvas.height - barHeight, barWidth, barHeight, 4);
+                    canvasCtx.fill();
+
+                    x += barWidth + gap;
+                }
+            }
+            draw();
+        }
+
+        // =========================================================================
+        // 11. CARTUCHEIRA DE VINHETAS & EFEITOS SONOROS GOSPEL
+        // =========================================================================
+        function playSFX(type) {
+            initAudioContext();
+            const now = audioCtx.currentTime;
+
+            if (type === 'vinheta') {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.12);
+                    gain.gain.setValueAtTime(0.25, now + i * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.55);
+                    osc.connect(gain);
+                    gain.connect(masterAnalyser);
+                    osc.start(now + i * 0.12);
+                    osc.stop(now + i * 0.12 + 0.6);
+                });
+
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utter = new SpeechSynthesisUtterance("Você está na Rádio Gospel Inspiração e Louvor. A voz da fé e da adoração!");
+                    utter.lang = 'pt-BR';
+                    utter.rate = 1.05;
+                    window.speechSynthesis.speak(utter);
+                }
+            } else if (type === 'harpa') {
+                const harpNotes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
+                harpNotes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.22, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 1.4);
+                    osc.connect(gain);
+                    gain.connect(masterAnalyser);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 1.45);
+                });
+            } else if (type === 'aplausos') {
+                const bufferSize = audioCtx.sampleRate * 1.8;
+                const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+                }
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1100;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.8);
+
+                whiteNoise.connect(filter);
+                filter.connect(gain);
+                gain.connect(masterAnalyser);
+                whiteNoise.start(now);
+            } else if (type === 'fundo') {
+                [261.63, 329.63, 392.00, 493.88].forEach(freq => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now);
+                    gain.gain.setValueAtTime(0.01, now);
+                    gain.gain.linearRampToValueAtTime(0.12, now + 0.5);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
+                    osc.connect(gain);
+                    gain.connect(masterAnalyser);
+                    osc.start(now);
+                    osc.stop(now + 3.1);
+                });
+            }
+        }
+
+        // =========================================================================
+        // 12. PROGRAMAÇÃO DIÁRIA & MURAL DE PEDIDOS
+        // =========================================================================
+        function renderSchedule() {
+            const currentHour = new Date().getHours();
+            const container = document.getElementById('scheduleList');
+            container.innerHTML = scheduleData.map(item => {
+                const isNow = currentHour >= item.start && currentHour < item.end;
+                return `
+                    <div class="p-4 rounded-2xl border transition-all flex items-center justify-between ${
+                        isNow
+                        ? 'bg-gold-500/10 border-gold-500/40 shadow-lg shadow-gold-500/5'
+                        : 'bg-navy-950/60 border-white/5 hover:border-white/10'
+                    }">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${
+                                isNow ? 'bg-gold-500 text-navy-950' : 'bg-navy-900 text-gray-400'
+                            }">
+                                <i class="${isNow ? 'fa-solid fa-broadcast-tower animate-pulse' : 'fa-regular fa-clock'}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm sm:text-base">${item.title}</h4>
+                                <p class="text-xs text-gray-400">${item.host}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-mono font-semibold ${isNow ? 'text-gold-400' : 'text-gray-400'}">${item.time}</span>
+                            ${isNow ? '<span class="block text-[10px] font-bold text-gold-400 uppercase tracking-wider">No Ar</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderMessages() {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = chatMessagesData.map(msg => `
+                <div class="bg-navy-950/80 p-3.5 rounded-xl border border-white/5 space-y-1">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-gold-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-circle"></i> ${escapeHTML(msg.name)} 
+                            <span class="text-[10px] text-gray-500 font-normal">(${escapeHTML(msg.city)})</span>
+                        </span>
+                        <span class="text-[10px] text-gray-500 font-mono">${msg.time}</span>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">${escapeHTML(msg.msg)}</p>
+                </div>
+            `).join('');
+        }
+
+        function sendMessage(e) {
+            e.preventDefault();
+            const name = document.getElementById('userName').value.trim();
+            const city = document.getElementById('userCity').value.trim();
+            const msg = document.getElementById('userMessage').value.trim();
+            if (!name || !msg) return;
+
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            chatMessagesData.unshift({
+                name: name,
+                city: city || "Brasil",
+                msg: msg,
+                time: timeStr
+            });
+
+            localStorage.setItem('inspiracaoLouvorMessages', JSON.stringify(chatMessagesData.slice(0, 50)));
+            renderMessages();
+            document.getElementById('userMessage').value = '';
+            showToast("Pedido enviado ao mural da Rádio Gospel Inspiração e Louvor!");
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById('radioToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'radioToast';
+                toast.className = 'fixed bottom-20 lg:bottom-5 right-4 left-4 sm:left-auto z-50 bg-navy-900 border border-gold-500/40 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 transition-all duration-300';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-gold-400"></i> <span>${escapeHTML(message)}</span>`;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(12px)';
+            }, 3500);
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g,
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
+```
